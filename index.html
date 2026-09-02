@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JanSetu | Community Problem Solving Platform</title>
+  <meta name="description" content="A digital platform connecting citizens, colleges and industry to solve community challenges.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='31' fill='%23ffffff' stroke='%23e3eaf3' stroke-width='1'/%3E%3Cpath d='M32 3a29 29 0 0 1 0 58 29 29 0 0 1 0-58z' fill='none'/%3E%3Cpath d='M4 22.3A29 29 0 0 1 32 3v19.3z' fill='%23ff9933'/%3E%3Cpath d='M4 41.7A29 29 0 0 0 32 61V41.7z' fill='%23138808'/%3E%3Cpath d='M60 22.3A29 29 0 0 0 32 3v19.3z' fill='%23ff9933'/%3E%3Cpath d='M60 41.7A29 29 0 0 1 32 61V41.7z' fill='%23138808'/%3E%3Crect x='4' y='22.3' width='56' height='19.4' fill='%23ffffff'/%3E%3Ccircle cx='32' cy='32' r='8.5' fill='none' stroke='%23123f78' stroke-width='1.4'/%3E%3Cg stroke='%23123f78' stroke-width='1'%3E%3Cline x1='32' y1='23.5' x2='32' y2='40.5'/%3E%3Cline x1='23.5' y1='32' x2='40.5' y2='32'/%3E%3Cline x1='26' y1='26' x2='38' y2='38'/%3E%3Cline x1='26' y1='38' x2='38' y2='26'/%3E%3Cline x1='29' y1='24.2' x2='35' y2='39.8'/%3E%3Cline x1='35' y1='24.2' x2='29' y2='39.8'/%3E%3Cline x1='24.2' y1='29' x2='39.8' y2='35'/%3E%3Cline x1='24.2' y1='35' x2='39.8' y2='29'/%3E%3C/g%3E%3Ccircle cx='32' cy='32' r='2.4' fill='%23123f78'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  
+  <!-- Custom CSS file link -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="top">
+    <div class="container">
+      <span>🇮🇳 Building solutions with citizens, colleges & industry</span>
+      <span>Community Innovation Network</span>
+    </div>
+  </div>
+  
+  <header>
+    <nav class="nav container">
+      <a class="logo" href="#"><span class="logo-mark">JS</span>JanSetu</a>
+      <div class="links">
+        <a href="#discover">Discover</a>
+        <a href="#map-section">Problem Map</a>
+        <a href="#submit">Submit Problem</a>
+        <a href="#track">Track</a>
+        <a href="#workspace">Workspace</a>
+        <button class="btn outline" onclick="openModal('citizenModal')">Citizen Login</button>
+        <button class="btn outline" onclick="openModal('collegeModal')">College</button>
+        <button class="btn primary" onclick="openModal('industryModal')">Industry</button>
+      </div>
+      <button class="menu" onclick="toggleMenu()">☰</button>
+    </nav>
+    <div id="mobile" style="display:none;padding:13px;background:#fff;border-top:1px solid var(--line)">
+      <div class="container" style="display:grid;gap:9px;font-size:13px;font-weight:800">
+        <a href="#discover">Discover</a>
+        <a href="#map-section">Problem Map</a>
+        <a href="#submit">Submit Problem</a>
+        <a href="#track">Track</a>
+        <a href="#workspace">Workspace</a>
+        <button class="btn outline" onclick="openModal('citizenModal')">Citizen Login</button>
+        <button class="btn outline" onclick="openModal('collegeModal')">College Dashboard</button>
+        <button class="btn primary" onclick="openModal('industryModal')">Industry Dashboard</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="pill">Citizen-powered solution network</span>
+          <h1>Problems around us.<br><span>Solutions together.</span></h1>
+          <p>JanSetu connects citizens who experience real problems with colleges, student teams, researchers and industry partners who can build practical solutions.</p>
+          <div class="actions">
+            <a class="btn primary" href="#submit">+ Submit a Problem</a>
+            <a class="btn secondary" href="#map-section">Explore Live Map →</a>
+          </div>
+          <div class="stats">
+            <div><b>248</b><small>Verified challenges</small></div>
+            <div><b>86</b><small>Solutions in progress</small></div>
+            <div><b>31</b><small>Partner institutions</small></div>
+            <div><b>42</b><small>Impact projects</small></div>
+          </div>
+        </div>
+        <div class="hero-card">
+          <div style="position:relative">
+            <div id="heroMap"></div>
+            <div class="map-label">📍 <b>Live Community Map</b><br><span style="color:#68788f">Verified challenges across the region</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="discover">
+      <div class="container">
+        <div class="head">
+          <h2>Discover community challenges</h2>
+          <p>Find verified problems by category, location and urgency — then support, solve or sponsor them.</p>
+        </div>
+        <div class="grid3">
+          <div class="card">
+            <div class="icon">🚨</div>
+            <h3>Emergency & Disaster</h3>
+            <p>Floods, landslides, unsafe roads, emergency access and other high-risk situations.</p>
+            <span class="tag">32 active</span>
+          </div>
+          <div class="card">
+            <div class="icon">💧</div>
+            <h3>Water & Sanitation</h3>
+            <p>Water quality, leakage, drainage, waste collection and sanitation challenges.</p>
+            <span class="tag">48 active</span>
+          </div>
+          <div class="card">
+            <div class="icon">🎓</div>
+            <h3>Education & Skills</h3>
+            <p>School infrastructure, attendance, digital access and employability problems.</p>
+            <span class="tag">27 active</span>
+          </div>
+        </div>
+        <div class="grid2" style="margin-top:20px">
+          <div class="card">
+            <h3>🔥 High-priority challenges</h3>
+            <div class="problem-list">
+              <div class="row">
+                <div><b>Flooding near village school</b><br><small style="color:#68788f">Ranchi • 1,240 affected</small></div>
+                <span class="status red">92/100</span>
+              </div>
+              <div class="row">
+                <div><b>Unsafe drinking water</b><br><small style="color:#68788f">Ranchi • 680 affected</small></div>
+                <span class="status red">88/100</span>
+              </div>
+              <div class="row">
+                <div><b>Smart irrigation requirement</b><br><small style="color:#68788f">Hazaribagh • 430 affected</small></div>
+                <span class="status blue">79/100</span>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <h3>❤️ Community support</h3>
+            <p>Citizens can like and follow problems. Strong community support increases visibility for administrators and solution teams.</p>
+            <div style="margin-top:15px">
+              <span class="tag">1,240 likes</span>
+              <span class="tag">286 comments</span>
+              <span class="tag">410 followers</span>
+            </div>
+            <button class="btn secondary" style="margin-top:17px" onclick="toast('Support added to this challenge')">👍 Support a challenge</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="map-section" style="background:#fff">
+      <div class="container">
+        <div class="head">
+          <h2>Interactive Problem Map</h2>
+          <p>See where problems are happening. Filter by category and open a marker for full details.</p>
+        </div>
+        <div class="filters">
+          <button class="filter active" data-filter="all">All</button>
+          <button class="filter" data-filter="disaster">Disaster</button>
+          <button class="filter" data-filter="water">Water</button>
+          <button class="filter" data-filter="education">Education</button>
+          <button class="filter" data-filter="health">Healthcare</button>
+          <button class="filter" data-filter="agri">Agriculture</button>
+        </div>
+        <div id="map"></div>
+      </div>
+    </section>
+
+    <section id="track" class="track">
+      <div class="container">
+        <div class="head">
+          <h2>Track your problem</h2>
+          <p>Know exactly where your submission has reached — no black box.</p>
+        </div>
+        <div class="card trackbox">
+          <div class="trackbar">
+            <input id="trackId" placeholder="Enter Problem ID, e.g. JS-2026-1048">
+            <button class="btn primary" onclick="track()">Track Status</button>
+          </div>
+          <div id="trackResult"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="submit" class="form-wrap">
+      <div class="container">
+        <div class="head">
+          <h2>Submit a community problem</h2>
+          <p>Describe the issue in your own words. Add evidence, urgency and the number of people affected so the platform can calculate a transparent priority score.</p>
+        </div>
+        <form class="form" id="problemForm">
+          <div class="form-grid">
+            <div class="field">
+              <label>Problem Title *</label>
+              <input id="title" required placeholder="e.g. Flooding near village school">
+            </div>
+            <div class="field">
+              <label>Category *</label>
+              <select id="category" required>
+                <option value="">Select</option>
+                <option>Disaster & Emergency</option>
+                <option>Water & Sanitation</option>
+                <option>Education</option>
+                <option>Healthcare</option>
+                <option>Agriculture</option>
+                <option>Environment</option>
+                <option>Infrastructure</option>
+                <option>Accessibility</option>
+                <option>Public Safety</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Location *</label>
+              <input id="location" required placeholder="Village / ward / landmark">
+            </div>
+            <div class="field">
+              <label>District *</label>
+              <select id="district" required>
+                <option value="">Select district</option>
+                <option>Ranchi</option>
+                <option>Jamshedpur</option>
+                <option>Hazaribagh</option>
+                <option>Dhanbad</option>
+                <option>Bokaro</option>
+                <option>Deoghar</option>
+                <option>Giridih</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Urgency *</label>
+              <select id="urgency" required>
+                <option>Low</option>
+                <option>Medium</option>
+                <option>High</option>
+                <option>Critical — Emergency / Disaster</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>People affected *</label>
+              <input id="people" type="number" min="1" required placeholder="Approx. number">
+            </div>
+            <div class="field full">
+              <label>Detailed Description *</label>
+              <textarea id="desc" required placeholder="What is happening? Where? Since when? How often? Why is it a problem?"></textarea>
+            </div>
+            <div class="field full">
+              <label>Impact on people / community</label>
+              <textarea id="impactText" placeholder="Who is affected and what happens because of this problem?"></textarea>
+            </div>
+            <div class="field full">
+              <label>Your solution idea</label>
+              <textarea id="idea" placeholder="If you have an idea, describe what could solve this problem."></textarea>
+            </div>
+            <div class="field full">
+              <label>Photos / Videos / Evidence</label>
+              <div class="upload" onclick="document.getElementById('files').click()">
+                📷 <b>Upload photos & videos</b><br>JPG, PNG, MP4, PDF • multiple files supported
+              </div>
+              <input id="files" type="file" accept="image/*,video/*,.pdf" multiple hidden onchange="fileNames()">
+              <small id="filesOut" style="color:#68788f"></small>
+            </div>
+            <div class="field full">
+              <button class="btn primary" type="submit">Submit for Verification →</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section id="roles">
+      <div class="container">
+        <div class="head">
+          <h2>Separate workspaces for every partner</h2>
+          <p>Each stakeholder gets the tools needed for their role in solving a community challenge.</p>
+        </div>
+        <div class="grid3">
+          <div class="card role-card">
+            <div class="icon">👤</div>
+            <h3>Citizen Workspace</h3>
+            <p>Submit, support and track problems.</p>
+            <ul>
+              <li>My submissions</li>
+              <li>Status timeline</li>
+              <li>Likes & comments</li>
+              <li>Citizen feedback</li>
+            </ul>
+            <button class="btn secondary" onclick="openModal('citizenModal')">Open Citizen Login</button>
+          </div>
+          <div class="card role-card">
+            <div class="icon">🎓</div>
+            <h3>College Dashboard</h3>
+            <p>Discover challenges and create student solution teams.</p>
+            <ul>
+              <li>Challenge discovery</li>
+              <li>Team & proposal management</li>
+              <li>Faculty review</li>
+              <li>Prototype & pilot tracking</li>
+            </ul>
+            <button class="btn secondary" onclick="openModal('collegeModal')">Open College Login</button>
+          </div>
+          <div class="card role-card">
+            <div class="icon">🏭</div>
+            <h3>Industry Dashboard</h3>
+            <p>Mentor, sponsor and scale high-impact solutions.</p>
+            <ul>
+              <li>High-priority marketplace</li>
+              <li>Mentorship</li>
+              <li>Pilot sponsorship</li>
+              <li>Scale & impact reports</li>
+            </ul>
+            <button class="btn primary" onclick="openModal('industryModal')">Open Industry Login</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="workspace" class="workspace">
+      <div class="container">
+        <div class="head">
+          <h2>Collaborative Solution Workspace</h2>
+          <p>Once a problem is matched, citizens, student teams, faculty and industry mentors work together here.</p>
+        </div>
+        <div class="workspace-grid">
+          <div class="card">
+            <h3>🌊 Flood-safe school access</h3>
+            <span class="tag">Priority 92</span> <span class="tag">1,240 affected</span>
+            <div class="problem-list" style="margin-top:10px">
+              <div class="row">
+                <div><b>Map flood points</b><br><small>Student team • Due today</small></div>
+                <span class="status blue">In progress</span>
+              </div>
+              <div class="row">
+                <div><b>Sensor prototype</b><br><small>IoT team • Due Friday</small></div>
+                <span class="status">Pending</span>
+              </div>
+              <div class="row">
+                <div><b>Field review</b><br><small>Industry mentor</small></div>
+                <span class="status">Pending</span>
+              </div>
+            </div>
+            <button class="btn primary" onclick="toast('New task added')">+ Add Task</button>
+          </div>
+          <div class="card">
+            <h3>💬 Team collaboration</h3>
+            <div class="chat" id="chat">
+              <div class="msg"><b>Student Team</b><br>Prototype v1 is ready for field testing.</div>
+              <div class="msg"><b>Industry Mentor</b><br>I can review the sensor design tomorrow.</div>
+              <div class="msg me"><b>Citizen Reporter</b><br>School access is worst after heavy rain.</div>
+            </div>
+            <div class="chat-input">
+              <input id="chatInput" placeholder="Write a message...">
+              <button class="btn primary" onclick="sendMessage()">Send</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="insights">
+      <div class="container">
+        <div class="head">
+          <h2>Priority Score & Impact Tracking</h2>
+          <p>Make decisions using transparent signals instead of guesswork.</p>
+        </div>
+        <div class="grid3">
+          <div class="card">
+            <h3>🎯 Priority Score</h3>
+            <div class="score">92<span style="font-size:16px">/100</span></div>
+            <div class="progress"><i></i></div>
+            <p style="margin-top:10px">Critical urgency + people affected + severity + community support.</p>
+          </div>
+          <div class="card">
+            <h3>📈 Impact Tracking</h3>
+            <div class="impact">
+              <div><b>1,240</b><small>beneficiaries</small></div>
+              <div><b>38%</b><small>risk reduced</small></div>
+              <div><b>4.7/5</b><small>feedback</small></div>
+            </div>
+            <p style="margin-top:13px">Track outcomes after pilot and implementation.</p>
+          </div>
+          <div class="card">
+            <h3>❤️ Community Signal</h3>
+            <div class="score">86 <span style="font-size:13px">supporters</span></div>
+            <p>Likes, comments, followers and citizen feedback strengthen visibility of recurring problems.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="citizenDash" class="dashboard">
+      <div class="container">
+        <div class="dash-head">
+          <div><span class="pill">Citizen dashboard</span><h2>My Problems</h2></div>
+          <button class="btn outline" onclick="hideDash('citizenDash')">Back</button>
+        </div>
+        <div class="dashcards">
+          <div class="dashstat"><small>Total reports</small><b>4</b></div>
+          <div class="dashstat"><small>Under review</small><b>1</b></div>
+          <div class="dashstat"><small>Matched</small><b>1</b></div>
+          <div class="dashstat"><small>Resolved</small><b>2</b></div>
+        </div>
+        <div class="table">
+          <table>
+            <tr><th>Problem</th><th>ID</th><th>Location</th><th>Progress</th><th>Action</th></tr>
+            <tr>
+              <td>Flooding near school</td>
+              <td>JS-2026-1048</td>
+              <td>Ranchi</td>
+              <td><span class="status blue">Team Matched</span></td>
+              <td><button class="btn secondary" onclick="document.getElementById('trackId').value='JS-2026-1048';document.getElementById('track').scrollIntoView()">Track</button></td>
+            </tr>
+            <tr>
+              <td>Street light issue</td>
+              <td>JS-2026-0971</td>
+              <td>Ranchi</td>
+              <td><span class="status green">Resolved</span></td>
+              <td>View</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="collegeDash" class="dashboard">
+      <div class="container">
+        <div class="dash-head">
+          <div><span class="pill">Institution workspace</span><h2>College & Student Dashboard</h2></div>
+          <button class="btn outline" onclick="hideDash('collegeDash')">Back</button>
+        </div>
+        <div class="dashcards">
+          <div class="dashstat"><small>Open challenges</small><b>74</b></div>
+          <div class="dashstat"><small>Student teams</small><b>12</b></div>
+          <div class="dashstat"><small>Proposals</small><b>28</b></div>
+          <div class="dashstat"><small>Pilots</small><b>9</b></div>
+        </div>
+        <div class="grid3">
+          <div class="card">
+            <h3>🔎 Challenge Discovery</h3>
+            <p>Filter by skills, location, category and priority.</p>
+            <button class="btn secondary" style="margin-top:12px" onclick="toast('Challenge marketplace opened')">Browse</button>
+          </div>
+          <div class="card">
+            <h3>👨‍💻 Team Builder</h3>
+            <p>Create teams, assign tasks and manage faculty review.</p>
+            <button class="btn secondary" style="margin-top:12px" onclick="document.getElementById('workspace').scrollIntoView()">Open Workspace</button>
+          </div>
+          <div class="card">
+            <h3>📤 Solution Proposal</h3>
+            <p>Submit technology, timeline, team and expected impact.</p>
+            <button class="btn primary" style="margin-top:12px" onclick="toast('Proposal builder opened')">Create Proposal</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="industryDash" class="dashboard">
+      <div class="container">
+        <div class="dash-head">
+          <div><span class="pill">Partner workspace</span><h2>Industry & Startup Dashboard</h2></div>
+          <button class="btn outline" onclick="hideDash('industryDash')">Back</button>
+        </div>
+        <div class="dashcards">
+          <div class="dashstat"><small>High priority</small><b>31</b></div>
+          <div class="dashstat"><small>Mentored teams</small><b>16</b></div>
+          <div class="dashstat"><small>Funded pilots</small><b>7</b></div>
+          <div class="dashstat"><small>Scaled</small><b>4</b></div>
+        </div>
+        <div class="grid3">
+          <div class="card">
+            <h3>🎯 High-impact problems</h3>
+            <p>Discover verified challenges ready for technology or funding.</p>
+            <button class="btn secondary" style="margin-top:12px" onclick="toast('Industry marketplace opened')">Explore</button>
+          </div>
+          <div class="card">
+            <h3>🤝 Mentor teams</h3>
+            <p>Join college teams and provide expert guidance.</p>
+            <button class="btn secondary" style="margin-top:12px" onclick="document.getElementById('workspace').scrollIntoView()">Join Workspace</button>
+          </div>
+          <div class="card">
+            <h3>💰 Sponsor & Scale</h3>
+            <p>Fund pilots and monitor implementation impact.</p>
+            <button class="btn primary" style="margin-top:12px" onclick="toast('Sponsorship workflow opened')">Sponsor</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <section id="faq">
+    <div class="container">
+      <div class="head">
+        <span class="pill">Support</span>
+        <h2>Frequently Asked Questions</h2>
+        <p>Quick answers for citizens, colleges and industry partners.</p>
+      </div>
+      <div class="faq-wrap">
+        <details class="faq-item">
+          <summary>How do I submit a community problem?</summary>
+          <p>Go to the Submit Problem section, add the location, category and details, and attach photos if you have them. You'll get a tracking ID instantly.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Who can join as an Industry Partner?</summary>
+          <p>Any registered company, startup or organisation can sign up to mentor student teams, sponsor pilots and help scale verified community solutions.</p>
+        </details>
+        <details class="faq-item">
+          <summary>How do Partner Universities & colleges participate?</summary>
+          <p>Institutions can browse open challenges, build student teams and submit technology proposals directly from the College Dashboard.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Where can I see the proposed Solutions for a problem?</summary>
+          <p>Every tracked problem shows its matched team, proposed solution and pilot status under the Track Problem section.</p>
+        </details>
+        <details class="faq-item">
+          <summary>How do I reach Contact Support?</summary>
+          <p>Email jansetuasplatformname978@gmail.com or call our helpline in the footer below — our team usually replies within 24 hours.</p>
+        </details>
+      </div>
+      <div class="help-cta" id="help">
+        <h3>Still need help?</h3>
+        <p>Our support team is here for citizens, colleges and industry partners — reach out anytime.</p>
+        <a class="btn primary" href="mailto:jansetuasplatformname978@gmail.com">✉️ Email Support</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container foot-top">
+      <div class="flag3d-wrap">
+        <div class="pole"></div>
+        <div class="flag3d"><i class="saffron"></i><i class="white"><span class="chakra"></span></i><i class="greenb"></i></div>
+      </div>
+      <div class="foot">
+        <div>
+          <h3>🇮🇳 JanSetu</h3>
+          <span class="foot-tagline">The Setu Between Citizens & Solutions</span>
+          <p style="margin-top:14px">A civic innovation platform connecting community problems to collaborative solutions — built together with citizens, colleges and industry.</p>
+          <div class="social-row">
+            <a href="#" aria-label="Facebook" title="Facebook">f</a>
+            <a href="#" aria-label="X / Twitter" title="X / Twitter">𝕏</a>
+            <a href="#" aria-label="Instagram" title="Instagram">◎</a>
+            <a href="#" aria-label="LinkedIn" title="LinkedIn">in</a>
+            <a href="#" aria-label="YouTube" title="YouTube">▶</a>
+          </div>
+        </div>
+        <div>
+          <h3>Explore</h3>
+          <a href="#discover">Challenges</a>
+          <a href="#map-section">Problem Map</a>
+          <a href="#track">Track Problem</a>
+          <a href="#submit">Submit Problem</a>
+        </div>
+        <div>
+          <h3>Partners</h3>
+          <a href="#roles">Industry Partners</a>
+          <a href="#roles">Partner Universities</a>
+          <a href="#roles">Solutions</a>
+          <a href="#workspace">Collaboration</a>
+        </div>
+        <div>
+          <h3>Support</h3>
+          <ul class="foot-contact">
+            <li><span class="ic">✉️</span><a href="mailto:jansetuasplatformname978@gmail.com">jansetuasplatformname978@gmail.com</a></li>
+            <li><span class="ic">📞</span><a href="tel:+911800123456">1800-123-456 (Toll-free)</a></li>
+            <li><span class="ic">❓</span><a href="#faq">FAQs</a></li>
+            <li><span class="ic">🛟</span><a href="#help">Help Center</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container foot-bottom">
+      <span>© 2026 JanSetu. All rights reserved.</span>
+      <span><a href="#">Privacy Policy</a> · <a href="#">Terms of Use</a> · <a href="#">Accessibility</a></span>
+    </div>
+  </footer>
+
+  <div class="modal" id="citizenModal">
+    <div class="modalbox">
+      <button class="close" onclick="closeModal('citizenModal')">×</button>
+      <h3>Citizen Login</h3>
+      <p style="font-size:12px;color:#68788f">Login to submit and track your community problems.</p>
+      <div class="field"><label>Mobile / Email</label><input placeholder="9876543210 or email"></div>
+      <div class="field"><label>Password / OTP</label><input type="password" placeholder="Enter OTP"></div>
+      <button class="btn primary" onclick="loginDash('citizenDash','Citizen login successful')">Login</button>
+    </div>
+  </div>
+
+  <div class="modal" id="collegeModal">
+    <div class="modalbox">
+      <button class="close" onclick="closeModal('collegeModal')">×</button>
+      <h3>College / University Login</h3>
+      <p style="font-size:12px;color:#68788f">Access challenges, teams and solution proposals.</p>
+      <div class="field"><label>Institution Email</label><input placeholder="name@college.edu"></div>
+      <div class="field"><label>Password</label><input type="password" placeholder="••••••••"></div>
+      <button class="btn primary" onclick="loginDash('collegeDash','College workspace opened')">Login to College Dashboard</button>
+    </div>
+  </div>
+
+  <div class="modal" id="industryModal">
+    <div class="modalbox">
+      <button class="close" onclick="closeModal('industryModal')">×</button>
+      <h3>Industry / Startup Login</h3>
+      <p style="font-size:12px;color:#68788f">Find, mentor, sponsor and scale high-impact projects.</p>
+      <div class="field"><label>Business Email</label><input placeholder="team@company.com"></div>
+      <div class="field"><label>Password</label><input type="password" placeholder="••••••••"></div>
+      <button class="btn primary" onclick="loginDash('industryDash','Industry workspace opened')">Login to Industry Dashboard</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <!-- Leaflet Map Script -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Custom Script File Link -->
+  <script src="script.js"></script>
+</body>
+</html>
